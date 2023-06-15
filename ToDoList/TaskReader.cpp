@@ -1,26 +1,23 @@
 #include "TaskReader.h"
+#include<string>
+#include<iostream>
 
-std::vector<std::string> TaskReader::m_getLines()
+void TaskReader::m_getLines() 
 {
-    if (!std::filesystem::exists(m_path)) throw std::runtime_error("Error: File not found!");
+    if (!std::filesystem::exists(m_path)) throw std::runtime_error("File path does not exist!(Trying to read)");
     std::fstream file_stream(m_path);
-    std::vector<std::string> lines;
-    lines.reserve(std::count(std::istream_iterator<char>(file_stream),std::istream_iterator<char>(),'\n'));
-    std::string line;
-    while (std::getline(file_stream, line))
+    if (!file_stream) throw std::runtime_error("The file could not be opened!(Trying to read)");
+    for (std::string l; std::getline(file_stream, l);)
     {
-        lines.emplace_back(std::move(line));
-        line.clear();   
-    }
-    return lines;      
+		lines.emplace_back(std::move(l));
+        l.clear();
+	}
+    file_stream.close();
 }
 
-std::vector<std::tuple<std::string, std::string, std::string>> TaskReader::m_getTasks()
+void TaskReader::m_getTasks()
 {   
-    auto lines = m_getLines();
-
-    std::vector<std::tuple<std::string, std::string, std::string>> tasks;
-
+    m_getLines();
     for (auto& line : lines)
     {
         std::string name;
@@ -28,42 +25,42 @@ std::vector<std::tuple<std::string, std::string, std::string>> TaskReader::m_get
         std::string date;
         std::string temp;
         std::stringstream string_stream(line);
+        int counter = 0;
         while (std::getline(string_stream, temp, '-'))
         {
-            static int counter = 0;
             if(counter == 0) 
             {
                 name = std::move(temp);
                 temp.clear();
+                counter++;
             }
             else if (counter == 1)
             {
                 desc = std::move(temp);
                 temp.clear();
+                counter++;
             }
             else if (counter == 2)
             {
                 date = std::move(temp);
                 temp.clear();
+                counter++;
             }
         }
 
-        tasks.emplace_back(std::move(name), std::move(desc), std::move(date));
+        tasks.emplace_back(name, desc, date);
     }
-    return tasks;
-}
-
-Task&& TaskReader::operator=(const Task&& task)
-{
-    
 }
 
 void TaskReader::insert_tasks()
 {
-	auto tasks = m_getTasks();
+	m_getTasks();
     for (auto& task : tasks)
     {
-		m_tasks.emplace_back(std::move(std::get<0>(task)), std::move(std::get<1>(task)), std::move(std::get<2>(task)));
+        std::string name = std::move(std::get<0>(task));
+        std::string desc = std::move(std::get<1>(task));
+        std::string date = std::move(std::get<2>(task));
+        m_tasks.emplace_back(name, desc, date);
 	}
 }
 

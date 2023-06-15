@@ -71,7 +71,7 @@
       <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -92,12 +92,14 @@
     <QtUic Include="ToDoList.ui" />
     <QtMoc Include="ToDoList.h" />
     <ClCompile Include="TaskReader.cpp" />
+    <ClCompile Include="TaskWriter.cpp" />
     <ClCompile Include="ToDoList.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskReader.h" />
+    <ClInclude Include="TaskWriter.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
