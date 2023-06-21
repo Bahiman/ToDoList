@@ -17,12 +17,12 @@ private:
 	void m_getTasks();
 	std::vector<std::string> lines;
 	void insert_tasks();
-	void m_setTasks();
+	void m_setTasks(); // asddssda
 public:
 	TaskReader() { m_setTasks(); }
 	~TaskReader() = default;
-	inline std::vector<Task>& getTasks() { return m_tasks;}
-	inline const std::vector<std::string>& getLines() const { return lines; }
-	inline void update() { m_setTasks(); }
+	std::vector<Task>& getTasks() { return m_tasks;}
+	const std::vector<std::string>& getLines() const { return lines; }
+	void update() { m_setTasks();}
 	friend TaskWriter;
 };

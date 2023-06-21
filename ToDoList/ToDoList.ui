@@ -6,133 +6,94 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>435</height>
+    <width>501</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>ToDoList</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="addBTN">
+   <widget class="QListView" name="task_view">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>260</y>
-      <width>75</width>
-      <height>24</height>
+      <x>110</x>
+      <y>60</y>
+      <width>301</width>
+      <height>381</height>
      </rect>
     </property>
-    <property name="text">
-     <string>+</string>
-    </property>
    </widget>
-   <widget class="QPushButton" name="subtractBTN">
+   <widget class="QLineEdit" name="task_name_input">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>260</y>
-      <width>75</width>
-      <height>24</height>
+      <x>180</x>
+      <y>20</y>
+      <width>51</width>
+      <height>21</height>
      </rect>
     </property>
-    <property name="text">
-     <string>-</string>
-    </property>
    </widget>
-   <widget class="QPushButton" name="multiplyBTN">
+   <widget class="QLabel" name="task_name_label">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>260</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>*</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="divideBTN">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>260</y>
-      <width>75</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>/</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_1">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>120</y>
+      <x>110</x>
+      <y>20</y>
       <width>71</width>
-      <height>21</height>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>First Number</string>
+     <string>Task Name:</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QPushButton" name="add_btn">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>170</y>
-      <width>91</width>
-      <height>21</height>
+      <x>360</x>
+      <y>20</y>
+      <width>41</width>
+      <height>24</height>
      </rect>
     </property>
     <property name="text">
-     <string>Second Number</string>
+     <string>Add:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="first_txt">
+   <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>120</y>
-      <width>113</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="second_txt">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>170</y>
-      <width>113</width>
-      <height>21</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>210</y>
-      <width>71</width>
-      <height>21</height>
+      <x>240</x>
+      <y>20</y>
+      <width>51</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Result</string>
+     <string>Task Desc</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="result_txt">
+   <widget class="QLineEdit" name="task_desc_input">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>210</y>
-      <width>113</width>
+      <x>300</x>
+      <y>20</y>
+      <width>51</width>
       <height>21</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="erase_all">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>450</y>
+      <width>75</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Erase All</string>
     </property>
    </widget>
   </widget>
@@ -141,7 +102,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>488</width>
+     <width>501</width>
      <height>22</height>
     </rect>
    </property>
