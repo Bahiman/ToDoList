@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include<fstream>
 class Task
 {
 private:
@@ -16,6 +17,8 @@ public:
 	void setDescription(const std::string& description) { m_description = description; }
 	void setDate(const std::string& date) { m_date = date; }
 	static Task lineToTask(const std::string& line){std::string name, description, date;unsigned int i = 0;while (line[i] != '-'){name += line[i];i++;}i++;while (line[i] != '-'){description += line[i];i++;}i++;while (i < line.size()){date += line[i];i++;}return Task(name, description, date);}
+	static std::string taskToLine(const Task& task) { return task.m_name + " " + task.m_description + " " + task.m_date; }
+	static std::string taskToFileLine(const Task& task) { return  task.m_name + "-" + task.m_description + "-" + task.m_date;}
 	friend std::ostream& operator<<(std::ostream& out, const Task& task) { out << task.m_name << ", " << task.m_description << ", " << task.m_date; return out;}
 	friend std::fstream& operator<<(std::fstream& out, const Task& task) { out << task.m_name << "-" << task.m_description << "-" << task.m_date; return out; }
 	std::string toString() const { return m_name + "-" + m_description + "-" + m_date; }

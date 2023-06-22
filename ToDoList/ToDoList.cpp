@@ -1,15 +1,18 @@
-#include "ToDoList.h"
+#include"ToDoList.h"
 #include<qabstractitemmodel.h>
 #include"TaskReader.h"
 #include"TaskWriter.h"
+#include"EditTask.h"
 #include"ui_ToDoList.h"
+#include<QContextMenuEvent>
 #include<sstream>
-#include <filesystem>
-#include <iostream>
+#include<filesystem>
+#include<iostream>
 #include<execution>
 #include<fstream>
 #include<ctime>
 #include <QStandardItemModel>
+
 
 class Timer
 {
@@ -44,10 +47,12 @@ public:
     }
 };
 
-ToDoList::ToDoList(QWidget *parent): QMainWindow(parent) 
+ToDoList::ToDoList(QWidget *parent) : QMainWindow(parent) 
 {
     ui.setupUi(this); 
+    ui.task_view->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui.task_view, &QListView::doubleClicked, this, &ToDoList::handleItemDoubleClicked);
+    connect(ui.task_view, &QListView::customContextMenuRequested, this, &ToDoList::showContextMenu);
     updateTasks();
 }
     
@@ -56,10 +61,6 @@ ToDoList::~ToDoList()
     
 }
 
-void ToDoList::showContextMenu(const QModelIndex& index)
-{
-    // so baby pull me closer to the back seat of ur rover that I know you can
-}
 
 void ToDoList::on_erase_all_clicked()
 {
@@ -78,27 +79,13 @@ void ToDoList::on_erase_all_clicked()
 
 void ToDoList::handleItemDoubleClicked(const QModelIndex& index)
 {
-    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui.task_view->model());
-    if (model)
-    {
-        try
-        {
-            std::string data = model->itemData(index).values().at(0).toString().toStdString();
-            auto [name, description, date] = getParams(data);
-            Task task(name, description, date);
-            TaskWriter task_writer;
-            task_writer.deleteTask(task);
-            updateTasks();
-            model->removeRow(index.row());
-        }
-        catch (const std::runtime_error& e)
-        {
-			std::cout << e.what() << std::endl;
-		}
+    deleteTask(index);
+}
 
-    } 
-    else
-        throw std::runtime_error("Double Click handling failed!");
+void ToDoList::showContextMenu(const QPoint& pos)
+{
+    QPoint mappedPos = ui.task_view->viewport()->mapFromGlobal(pos);
+    contextMenuEvent(new QContextMenuEvent(QContextMenuEvent::Reason::Other, mappedPos));
 }
 
 void ToDoList::updateTasks()
@@ -110,9 +97,9 @@ void ToDoList::updateTasks()
 
     for (auto& k : task_reader.getTasks())
     {
-    std::string data_to_set = k.getName() + " " + k.getDescription() + " " + k.getDate();
-    file_lines.emplace_back(std::move(data_to_set));
-    data_to_set.clear();
+        std::string data_to_set = k.getName() + " " + k.getDescription() + " " + k.getDate();
+        file_lines.emplace_back(std::move(data_to_set));
+        data_to_set.clear();
     }
     };
     {
@@ -134,6 +121,69 @@ std::tuple<std::string, std::string, std::string> ToDoList::getParams(const std:
     }
 
     return std::make_tuple(first, second, third);
+}
+
+void ToDoList::contextMenuEvent(QContextMenuEvent* event_)
+{
+    QMenu menu(this);
+    QAction* erase = menu.addAction("Erase");
+    QAction* edit = menu.addAction("Edit");
+    QAction* selectedAction = menu.exec(event_->globalPos());
+    if (selectedAction == erase)
+    {
+        deleteTask(getSelectedTask());
+    }
+    else
+    {
+        EditTask* edit_task = new EditTask(*this,this);
+        edit_task->show();
+        std::cerr << errno << std::endl;
+        
+    }
+}
+
+void ToDoList::deleteTask(const QModelIndex& index)
+{
+    QStandardItemModel* model = qobject_cast<QStandardItemModel*>(ui.task_view->model());
+    if (model)
+    {
+        try
+        {
+            std::string data = model->itemData(index).values().at(0).toString().toStdString();
+            auto [name, description, date] = getParams(data);
+            Task task(name, description, date);
+            TaskWriter task_writer;
+            task_writer.deleteTask(task);
+            updateTasks();
+            model->removeRow(index.row());
+        }
+        catch (const std::runtime_error& e)
+        {
+            std::cout << e.what() << std::endl;
+        }
+
+    }
+    else
+        throw std::runtime_error("Double Click handling failed!");
+}
+
+QModelIndex ToDoList::getSelectedTask()
+{
+    QItemSelectionModel* selectionModel = ui.task_view->selectionModel();
+
+    // Get the selected indexes
+    QModelIndexList selectedIndexes = selectionModel->selectedIndexes();
+
+    if (!selectedIndexes.isEmpty())
+    {
+        // Get the first selected index
+        QModelIndex firstSelectedIndex = selectedIndexes.first();
+        return firstSelectedIndex;
+    }
+    else
+    {
+        throw std::runtime_error("Getting the selcted list item failed!");
+    }
 }
 
 void ToDoList::on_add_btn_clicked()

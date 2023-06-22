@@ -12,6 +12,7 @@ private:
 public:
 	void addTask(const Task& task);
 	void overrideTask(unsigned int column, const Task& new_task);
+	void overrideTask(unsigned int column, std::string& data);
 	void deleteTask(unsigned int column);
 	void deleteTask(const Task& task);
 	void deleteTask(Task&& task);

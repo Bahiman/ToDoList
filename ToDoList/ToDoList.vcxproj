@@ -91,12 +91,15 @@
     <QtRcc Include="ToDoList.qrc" />
     <QtUic Include="ToDoList.ui" />
     <QtMoc Include="ToDoList.h" />
+    <ClCompile Include="EditTask.cpp" />
     <ClCompile Include="TaskReader.cpp" />
     <ClCompile Include="TaskWriter.cpp" />
     <ClCompile Include="ToDoList.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="EditTask.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="EditTask.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskReader.h" />
     <ClInclude Include="TaskWriter.h" />
